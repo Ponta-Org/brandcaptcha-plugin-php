@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Uso de BrandCaptcha con PHP</title>
+</head>
+
+<body>
+<h1 itemprop="name">Uso de BrandCaptcha con PHP</h1>
+<div itemprop="articleBody">
+  <p>La libreria en PHP de BrandCaptcha provee de manera simple colocar un Brand<a href="http://es.wikipedia.org/wiki/Captcha" target="_blank">Captcha</a> en su sitio desarrollado en PHP, ayudandolo a frenar bots que intenten generar abusos del mismo. La libreria realiza comunicaciones directamente con la API de BrandCaptcha.</p>
+  <p>Para realizar la implementación, solo es necesario incluir un archivo  "brandcaptchalib.php". Los otros archivos son ejemplos, material de guía, etc., no afectan la funcionalidad de a misma.</p>
+  <h2>Inicio</h2>
+  <p>Después de obtener las diferentes API Keys, a continuación se encuentran las instrucciones básicas de instalación de la libreria de BrandCaptcha en su sitio. <br />
+  </p>
+  <h3>Client Side</h3>
+  <p>Si desea usar la libreria para mostrar un BrandCaptcha, es necesario insertar una porción de código o snippet dentro del elemento &lt;form&gt; en el espacio o lugar que se mostrara el BrandCaptcha box:  </p>
+  <pre>require_once('brandcaptchalib.php');
+</pre>
+  <pre>$publickey = &quot;your_public_key&quot;; // Brindado por BrandCaptcha</pre>
+  <pre># the response from BrandCaptcha
+$resp = null;
+# the error code from BrandCaptcha, if any
+$error = null;</pre>
+  <pre>
+echo brandcaptcha_get_html($publickey, $error);</pre>
+  <p>Con la porción de código implementada, su formulario será algo similar al siguiente ejemplo::</p>
+  <pre>&lt;html&gt;
+&lt;body&gt;
+&lt;form action=&quot;process_form.php&quot; method=&quot;post&quot;&gt;
+&lt;?php
+
+require_once('brandcaptchalib.php');<br />$publickey = &quot;your_public_key&quot;; // Brindado por BrandCaptcha
+echo brandcaptcha_get_html($publickey, $error);</pre>
+  <pre>
+?&gt;
+		&lt;br/&gt;
+		&lt;input type=&quot;submit&quot; value=&quot;submit&quot; /&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+  <p>Recuerde que es necesario definir el valor de la variable $publickey reemplazando your_public_key con el valor provisto por BrandCaptcha.</p>
+  <p>En el formulario, el valor del atributo &quot;action&quot; es &quot;process_form.php&quot;. Este archivo, process_form.php sería el encargado de recibir los valores enviados a traves del formulario. <br />
+  </p>
+  <p>La funcion require_once en el ejemplo espera que la libreria brandcaptchalib.php se encuentre en el mismo directorio del formulario. <br />
+      Si se encuentra en otro directorio, es necesario cambiar la ruta en el require_once. <br /><strong>Ejemplo:</strong> Si la libreria se encuentra en el directorio &quot;brandcaptcha&quot; que esta en el mismo nivel que el archivo del formulario, la función require_once sera configurada de la siguiente manera: require_once('brandcaptcha/brandcaptchalib.php').</p>
+  <h3>Server Side</h3>
+  <p>El siguiente codigo debe ser colocado al principio del archivo process_form.php:</p>
+  <pre>  &lt;?php</pre>
+  <pre>	require_once('brandcaptchalib.php');
+        $privatekey = &quot;your_private_key&quot;; // Brindado por personal de BrandCaptcha</pre>
+  <pre>	# the response from BrandCaptcha
+	$resp = null;
+        # the error code from BrandCaptcha, if any
+        $error = null;</pre>
+  <pre>	# was there a BrandCaptcha response?
+	if ( isset($_POST[&quot;brand_cap_answer&quot;]) &amp;&amp; $_POST[&quot;brand_cap_answer&quot;]) {
+		$resp = brandcaptcha_check_answer ($privatekey,
+		$_SERVER[&quot;REMOTE_ADDR&quot;],
+		$_POST[&quot;brand_cap_challenge&quot;],
+     	$_POST[&quot;brand_cap_answer&quot;]);
+     	if ($resp-&gt;is_valid) {
+		// Your code here to handle a successful verification
+     		echo &quot;You got it!&quot;;
+     	} else {
+     		# set the error code so that we can display it
+     		$error = $resp-&gt;error;
+     	}
+   }<br /><br />  ?&gt;</pre>
+  <p>En el código anterior:</p>
+  <li>brandcaptcha_check_answer devuelve un objeto que representa si el usuario completo el challenge satisfactoriamente.</li>
+  <li>Si $resp-&gt;is_valid es verdadero (true) entonces el  captcha challenge fue correctamente completado y se podrá continuar con el procesamiento del formulario.</li>
+  <li>Si $resp-&gt;is_valid es falso (false) entonces el usuario fallo al ingresar el texto del captcha y se deberá volver a renderizar el formulario para permitir un nuevo intento. En este caso, $resp-&gt;error retornará un código de error que será enviado a la función brandcaptcha_get_html. Cuando esto ocurre, se visualizará un mensaje explicando que la validación fue incorrecta y debe intentarlo nuevamente.</li>
+  <p>Notese que el código solicita el valor para <strong>private</strong> key, este no debe ser confundido con el valor del public key.</p>
+  <p>Además, debe asegurarse que su formulario tenga seteado el uso de variables mediante $_POST, en vez de  $_REQUEST, y que el formulario en si use el metodo POST.</p>
+  <p>Listo! BrandCaptcha estaría funcionando en su sitio.</p>
+</div>
+</body>
+</html>
