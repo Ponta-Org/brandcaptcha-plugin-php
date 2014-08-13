@@ -85,15 +85,14 @@ if ( isset($_POST["brand_cap_answer"]) && $_POST["brand_cap_answer"]) {
 ?>
 ```
 
-                                                                                                                                                                                                 In the code above:
+In the code above:
 
-                                                                                                                                                                                                 * `brandcaptcha_check_answer` returns an object that represents whether the user successfully completed the challenge.
-                                                                                                                                                                                                 * If `$resp->is_valid` is `true` then the captcha challenge was correctly completed and you should continue with form processing.
-                                                                                                                                                                                                 * If `$resp->is_valid` is `false` then the user failed to provide the correct captcha text and you should redisplay the form to allow them another attempt. In this case `$resp->error` will be an error code that can be provided to `brandcaptcha_get_html`. Passing the error code makes the BrandCAPTCHA control display a message explaining that the user entered the text incorrectly and should try again.
+* `brandcaptcha_check_answer` returns an object that represents whether the user successfully completed the challenge.
+* If `$resp->is_valid` is `true` then the captcha challenge was correctly completed and you should continue with form processing.
+* If `$resp->is_valid` is `false` then the user failed to provide the correct captcha text and you should redisplay the form to allow them another attempt. In this case `$resp->error` will be an error code that can be provided to `brandcaptcha_get_html`. Passing the error code makes the BrandCAPTCHA control display a message explaining that the user entered the text incorrectly and should try again.
 
-                                                                                                                                                                                                 Notice that this code is asking for the **private key**, which should not be confused with the public key.
+Notice that this code is asking for the **private key**, which should not be confused with the public key.
 
-                                                                                                                                                                                                 Also make sure your form is set to get the form variables using `$_POST` instead of `$_REQUEST` and that the form itself is using the POST method.
+Also make sure your form is set to get the form variables using `$_POST` instead of `$_REQUEST` and that the form itself is using the POST method.
 
-                                                                                                                                                                                                 That's it! BrandCAPTCHA should now be working on your site.
-
+That's it! BrandCAPTCHA should now be working on your site.
