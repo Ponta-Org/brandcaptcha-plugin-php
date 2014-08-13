@@ -12,7 +12,7 @@ After you've obtained your API keys, below are basic instructions for installing
 
 If you want to use the PHP library to display the BrandCAPTCHA widget, you'll need to insert this snippet of code inside the `<form>` element where the BrandCAPTCHA widget will be placed:
 
-```
+```php
 require_once('brandcaptchalib.php');
 $publickey = "your_public_key";
 //the response from BrandCAPTCHA
@@ -24,7 +24,7 @@ echo brandcaptcha_get_html($publickey, $error);
 
 With the code, your form might look something like this:
 
-```
+```php
 <html>
     <body>
         <form action="process_form.php" method="post">
@@ -54,7 +54,7 @@ The `require_once` function in the example above expects `brandcaptchalib.php` t
 
 The following code should be placed at the top of the `process_form.php`:
 
-```
+```php
 <?php
 
 require_once('brandcaptchalib.php');
@@ -83,7 +83,7 @@ if ( isset($_POST["brand_cap_answer"]) && $_POST["brand_cap_answer"]) {
 }
 
 ?>
-                                                                                                                                                                                                 ```
+```
 
                                                                                                                                                                                                  In the code above:
 
