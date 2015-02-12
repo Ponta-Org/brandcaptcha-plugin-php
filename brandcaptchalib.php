@@ -2,7 +2,7 @@
 
 /*
  * Copyright (c) 2013 by PontaMedia & Zarego
- * Author: Carlos A. Bellucci, Daniel G. Gomez 
+ * Author: Carlos A. Bellucci, Daniel G. Gomez , Matias Dominoni
  *
  * This is a PHP library that handles calling BrandCaptcha.
  *    - Documentation and latest version
