@@ -11,7 +11,7 @@
 
 /* This code is based on code from,
  * and copied, modified and distributed with permission in accordance with its terms:
- * 
+ *
  * Copyright (c) 2007 reCAPTCHA -- http://recaptcha.net
  * AUTHORS:
  *   Mike Crawford
@@ -37,6 +37,7 @@
  */
 
 define("BRANDCAPTCHA_API_HOST", "api.pontamedia.net");
+
 define("BRANDCAPTCHA_VERIFY_PATH", "/verify.php");
 define("BRANDCAPTCHA_CHALLENGE_PATH", "/challenge.php");
 
@@ -80,7 +81,7 @@ function _brandcaptcha_http_post($host, $path, $data, $port = 80) {
         while ( !feof($fs) )
                 $response .= fgets($fs, 1160); // One TCP-IP packet
         fclose($fs);
-        
+
         $response = explode("\r\n\r\n", $response, 2);
 
         return $response;
@@ -97,14 +98,18 @@ function _brandcaptcha_http_post($host, $path, $data, $port = 80) {
 
  * @return string - The HTML to be embedded in the user's form.
  */
-function brandcaptcha_get_html ($pubkey, $error = null)
+function brandcaptcha_get_html ($pubkey, $error = null, $use_ssl = false)
 {
-	if ($pubkey == null || $pubkey == '') {
-		die ("To use BrandCaptcha you must get an API Key");
-	}
-	
-	$server = "//". BRANDCAPTCHA_API_HOST . BRANDCAPTCHA_CHALLENGE_PATH;
-        
+        if ($pubkey == null || $pubkey == '') {
+                die ("To use BrandCaptcha you must get an API Key");
+        }
+
+        if ($use_ssl) {
+                $server = "https://". BRANDCAPTCHA_API_HOST . BRANDCAPTCHA_CHALLENGE_PATH;
+        } else {
+                $server = "//". BRANDCAPTCHA_API_HOST . BRANDCAPTCHA_CHALLENGE_PATH;
+        }
+
         $errorpart = "";
         if ($error) {
            $errorpart = "&amp;error=" . $error;
@@ -133,14 +138,14 @@ class BrandCaptchaResponse {
   */
 function brandcaptcha_check_answer ($privkey, $remoteip, $challenge, $response, $extra_params = array())
 {
-	if ($privkey == null || $privkey == '') {
-		die ("To use BrandCaptcha you must get an API key");
-	}
+        if ($privkey == null || $privkey == '') {
+                die ("To use BrandCaptcha you must get an API key");
+        }
 
-	if ($remoteip == null || $remoteip == '') {
-		die ("For security reasons, you must pass the remote ip to BrandCaptcha");
-	}
-	
+        if ($remoteip == null || $remoteip == '') {
+                die ("For security reasons, you must pass the remote ip to BrandCaptcha");
+        }
+
         //discard spam submissions
         if ($challenge == null || strlen($challenge) == 0 || $response == null || strlen($response) == 0) {
                 $brandcaptcha_response = new BrandCaptchaResponse();
