@@ -8,7 +8,7 @@
  *          http://www.pontamedia.com/
  */
 
-define("BRANDCAPTCHA_API_HOST", "api.pontamedia.net");
+define("BRANDCAPTCHA_API_HOST", "api.ponta.co");
 
 define("BRANDCAPTCHA_VERIFY_PATH", "/verify.php");
 define("BRANDCAPTCHA_CHALLENGE_PATH", "/challenge.php");
